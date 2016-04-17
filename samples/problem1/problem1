@@ -1,58 +1,63 @@
+#function to print the name of states to a file passed as a parameter
 function print_to_file {
-echo -e "Alabama
-Alaska\nArizona\nArkansas
-\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarylan
-\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest\nVirginia\nWisconsin\nWyoming"> $1
+	 echo -e "Alabama
+Alaska\nArizona\nArkansas\nCalifornia\nColorado\nConnecticut\nDelaware\nFlorida\nGeorgia\nHawaii\nIdaho\nIllinois\nIndiana\nIowa\nKansas\nKentucky\nLouisiana\nMaine\nMarylan\nMassachusetts\nMichigan\nMinnesota\nMississippi\nMissouri\nMontana\nNebraska\nNevada\nNew Hampshire\nNew Jersey\nNew Mexico\nNew York\nNorth Carolina\nNorth Dakota\nOhio\nOklahoma\nOregon\nPennsylvania\nRhode Island\nSouth Carolina\nSouth Dakota\nTennessee\nTexas\nUtah\nVermont\nVirginia\nWashington\nWest\nVirginia\nWisconsin\nWyoming"> $1
 }
+
+# print to console only if verbose parameter is set
 function print_to_console {
-if [[ $1 == "YES" ]];then
-echo -e $2
-fi
+	 if [[ "$1" == "YES" ]];then
+	    echo -e $2
+	 fi
 }
+# print the usage of to console
 function print_help {
-print_to_console "YES" "Sample usage:\n ./bash_example [--help|-h]\n./bash_example --create-file=<filename>[--no-prompt][--verbose]"
+	 print_to_console "YES" "Sample usage:\n ./bash_example [--help|-h]\n./bash_example --create-file=<filename>[--no-prompt][--verbose]"
 }
-for i in "$@"
-do
-case $i in 
---help|h)
-HELP=YES
-shift
-;;
---create-file=*)
-CREATE_FILE="${i#*=}"
-shift
-;;
---verbose)
-VERBOSE=YES
-shift
-;;
---no-prompt)
-NO_PROMPT=YES
-shift
-;;
-*)
-print_help
-exit 1
-;;
-esac
+# user driven program. Pass the input parameters first.
+
+for i in "$@"; do
+	case $i in 
+	     --help|h)
+		HELP=YES
+	     	shift
+	     	;;
+	     --create-file=*)
+		CREATE_FILE="${i#*=}"
+		shift
+		;;
+	     --verbose)
+		VERBOSE=YES
+		shift
+		;;
+	     --no-prompt)
+		NO_PROMPT=YES
+		shift
+		;;
+	     *)
+		print_help
+		exit 1
+		;;
+	esac
 done
-if [[ $HELP == "YES" ]]; then
-print_help
-exit
-elfif [[ ! -a "$CREATE_FILE" || $NO_PROMPT == "YES" ]]
-print_to_file "$CREATE_FILE"
-print_to_console "$VERBOSE" "File Created"
+#if user NO_PROMPT then directly create the file else check to see if file is created. Prompt user if file exists, else create one
+#if VERBOSE print the actions 
+if [[ "$HELP" == "YES" ]]; then
+   print_help
+   exit 0
+elif [[ ! -a "$CREATE_FILE" || "$NO_PROMPT" == "YES" ]]; then
+      print_to_file "$CREATE_FILE"
+      print_to_console "$VERBOSE" "File Created"
 else
-print_to_console "$VERBOSE" "File already exists";
-while true; do
-      read -p "File exists. Overwrite (y/n)?" yesno
-      case $yesno in
-      	   y ) print_to_file CREATE_FILE;
-	       print_to_console $VERBOSE "File removed";
-	       print_to_console $VERBOSE "File Created";
-	       break;;
-	   n ) exit
-      esac
-done 	   
+	print_to_console "$VERBOSE" "File already exists";
+	while true; do
+      	      read -p "File exists. Overwrite (y/n)?" yesno
+      	      case $yesno in
+      	      	   y ) print_to_file "$CREATE_FILE";
+	       	       print_to_console $VERBOSE "File removed";
+	       	       print_to_console $VERBOSE "File Created";
+	       	       break;;
+	   	   n ) exit 0
+      	      esac
+	done 	   
 fi
