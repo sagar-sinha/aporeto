@@ -23,7 +23,7 @@ func check (e error) {
 // process a URL and store the frequency table in a file 
 func processUrl(url string, fileNo string, done chan bool){
         // Download the page from the given url
-	fmt.Println("Processing url : "+fileNo)
+	
     	resp, err_resp := http.Get(url)
 	check(err_resp)
 	defer resp.Body.Close()
