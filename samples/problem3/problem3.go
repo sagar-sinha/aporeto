@@ -12,6 +12,7 @@ import (
        "strconv"
 )
 
+
 // report the error to the user.
 func check (e error) {
      if e != nil {
@@ -20,8 +21,9 @@ func check (e error) {
 }
 
 // process a URL and store the frequency table in a file 
-func processUrl(url string, fileNo string){
+func processUrl(url string, fileNo string, done chan bool){
         // Download the page from the given url
+	fmt.Println("Processing url : "+fileNo)
     	resp, err_resp := http.Get(url)
 	check(err_resp)
 	defer resp.Body.Close()
@@ -56,9 +58,11 @@ func processUrl(url string, fileNo string){
 	for key, value := range word_count {
 		fOut.WriteString("\n\t"+key+":\t"+strconv.Itoa(value))
 	}
+	done <- true
 }
 
 func main() {
+     	
 	inputPtr := flag.String("urls","","comma-seperated-one-or-more-urls")
     	flag.Parse()
     	var urls string = *inputPtr
@@ -80,10 +84,15 @@ func main() {
 	      return 0, data, bufio.ErrFinalToken
 	}
 	scanner.Split(onComma)
-	i := 1
+	i := 0
+	done := make (chan bool)
 	 for scanner.Scan() {
-    	   processUrl(scanner.Text(), strconv.Itoa(i)) // passing the file no which will be used to create a file in which
-	   			      		       // the frequency table is to be stored 
-	   i++
+	   i ++
+    	   go processUrl(scanner.Text(), strconv.Itoa(i), done) //Executing the for-loop in parallel. Passing the file-no which will be used 
+	      				 		        //to create a file in which the frequency table is to be stored. 
+								//Also passing the channel used to signal when the goroutine has finished executing.
 	}
+	for j := 1; j<=i; j++ { // wait for all goroutines to complete before exiting 
+	    <-done
+	} 
 }
