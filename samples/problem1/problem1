@@ -40,7 +40,7 @@ for i in "$@"; do
 		;;
 	esac
 done
-#if user NO_PROMPT then directly create the file else check to see if file is created. Prompt user if file exists, else create one
+#if user sets NO_PROMPT then directly create the file else check to see if file is created. Prompt user if file exists, else create one
 #if VERBOSE print the actions 
 if [[ "$HELP" == "YES" ]]; then
    print_help
