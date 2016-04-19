@@ -4,7 +4,7 @@ What does it contain?
 ---------------------
 
 There are 3 programs.
-- Program 1 is a bash script. It's a simple user-driven program which creates a file with the user supplied filename containing the names of the fifty US states, each in a new line. 
+- Program 1 is a bash script. It's a simple user-driven program which creates a file with the user supplied filename containing the names of the fifty US states, each in a new line.
 > Usage - ./program1 [--help|-h]
         ./program1 --create-file=<filename> [--no-prompt] [--verbose]
 - Program 2 is coded in Golang. It creates an output file with duplicate lines removed from the input file . 
