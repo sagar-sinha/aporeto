@@ -18,8 +18,8 @@ Usage - program3 [-help|-h]
 Instructions to download and run the GO problems 2 and 3 on a Unix shell
 ------------------------------------------------------------------------
 
- >> go get github.com/sagar-sinha/aporeto/samples/problemX (replace X by 2 or 3)
- >> $GOPATH/bin/problemX (The command above downloads the binary into your bin Go workspace's bin folder, find and run it )
+go get github.com/sagar-sinha/aporeto/samples/problemX (replace X by 2 or 3) \n
+$GOPATH/bin/problemX (The command above downloads the binary into your bin Go workspace's bin folder, find and run it )
 
 
 My insights into the problems 
